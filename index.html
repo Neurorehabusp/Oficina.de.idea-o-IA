@@ -8,7 +8,7 @@
   <!-- Inclusão da biblioteca jsPDF -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
-   <style>
+  <style>
     :root {
       --azul-escuro: #003366;
       --azul-claro: #e6f0fa;
@@ -140,30 +140,33 @@
       margin-bottom: 0.4em;
       font-size: 2.8rem;
     }
-     
   </style>
 </head>
 
 <body>
 
+<!-- Título do Site -->
 <div class="title"> 
   <h2>OFICINA DE IDEAÇÃO</h2>
 </div>
 
+<!-- Sobre o Projeto -->
 <div class="fase">
   <div style="text-align: center; max-width: 1080px; margin: 0 auto; line-height: 1.6; color: #333;">
     <h2 style="margin-bottom: 0.4em;">Sobre o Projeto</h2>
-    <p style="font-size: 1.1em;
+    <p style="font-size: 1.1em; margin-bottom: 0.5em;">
       Este é um web app interativo que apresenta as etapas do Design Thinking (Oficina de Ideação), com o apoio de uma Inteligência Artificial para estimular a geração de ideias criativas e inclusivas. A ideia foi desenvolvida com o foco de ser aplicada em capacitações para professores de escola pública a fim de criar soluções inovadoras que contribuem para a inclusão escolar de alunos com deficiência.
+
       Foi desenvolvido no âmbito do grupo de pesquisa NeuroRehab, da Escola de Enfermagem de Ribeirão Preto da Universidade de São Paulo (EERP-USP).
+
       O projeto foi realizado pela estudante de Iniciação Científica Yasmin Sthefane Tavares, sob orientação da Profª Drª Fabiana Faleiros Castro.
     </p>
 
     <p style="font-weight: bold; font-size: 1.05em; margin-top: 1em; margin-bottom: 0.4em;">Como funciona?</p>
-    <p style="margin-bottom: 0.5em;"> <!-- Margem reduzida -->
+    <p style="margin-bottom: 0.5em;">
       Abaixo estão apresentadas as fases da Oficina de Ideação, com exemplos que podem ser utilizados para orientar sua proposta.
     </p>
-    <p style="margin-bottom: 0.5em;"> <!-- Margem reduzida -->
+    <p style="margin-bottom: 0.5em;">
       No canto da tela, há um botão que abre um <strong>chat com inteligência artificial</strong>: você pode inserir seu caso ou desafio e receber sugestões para desenvolver melhor sua ideia.
       Logo abaixo, há um campo de mensagem onde você pode registrar suas ideias. Após preenchê-lo, clique no botão <strong>“Enviar”</strong> para salvar.
       Se quiser gerar um arquivo com o conteúdo produzido, clique no botão <strong>“Gerar PDF”</strong>.
@@ -182,8 +185,58 @@
   </ul>
 </div>
 
-<!-- Mais fases... -->
+<div class="fase">
+  <h2>2. Motivadores</h2>
+  <ul>
+    <li>Identificação do que motiva a persona: sonhos, preferências, frustrações.</li>
+    <li>Esses dados ajudam a criar soluções alinhadas ao que faz sentido para o usuário.</li>
+    <br>
+    <strong>Exemplo: Ana adora contar histórias com imagens e se frustra quando não consegue expressar o que sente na sala de aula.</strong>
+  </ul>
+</div>
 
+<div class="fase">
+  <h2>3. Problemas</h2>
+  <ul>
+    <li>Identificação clara da barreira enfrentada pela persona.</li>
+    <li>Definir o problema de forma objetiva ajuda a equipe a trabalhar alinhada.</li>
+    <br>
+    <strong>Exemplo: Ana não consegue se comunicar com colegas e professores por falta de recursos visuais acessíveis.</strong>
+  </ul>
+</div>
+
+<div class="fase">
+  <h2>4. Desenvolvimento do Projeto</h2>
+  <ul>
+    <li>Ideação coletiva: geração de soluções em grupo (brainstorming).</li>
+    <li>Prototipagem: criação de modelos simples (protótipos).</li>
+    <li>Teste com usuários reais e coleta de feedback.</li>
+    <li>Iteração: refinar soluções com base nas respostas dos usuários.</li>
+  </ul>
+</div>
+
+<div class="fase">
+  <h2>5. Visão</h2>
+  <ul>
+    <li>Projeção de um futuro ideal após a solução do problema.</li>
+    <li>A visão do futuro guia o processo criativo com um objetivo claro.</li>
+    <br>
+    <strong>Exemplo: Ana utilizando um aplicativo com figuras e sons para se comunicar e participar das atividades em sala.</strong>
+  </ul>
+</div>
+
+<div class="fase">
+  <h2>6. Solução e Impacto</h2>
+  <ul>
+    <li>Definição e validação da solução final.</li>
+    <li>Análise do impacto: melhoria na participação, aprendizagem ou inclusão.</li>
+    <li>Encerramento do ciclo com foco em resultados reais para os usuários.</li>
+    <br>
+    <strong>Exemplo: Aplicativo de comunicação aumentativa validado com crianças autistas na escola.</strong>
+  </ul>
+</div>
+
+<!-- Funções de Chat e PDF -->
 <div class="chat">
   <h2>Chat de Ideias 💡</h2>
   <p>Digite suas ideias e comentários para salvar e depois gerar um PDF:</p>
@@ -215,113 +268,147 @@
 </footer>
 
 <script>
-  const mensagensKey = 'chatDesignThinkingMensagens';
-  const sessaoKey = 'chatDesignThinkingSessaoCompleta';
-  let editandoIndex = null;
+// Funções de interação com o chat e geração de PDF
+const mensagensKey = 'chatDesignThinkingMensagens';
+const sessaoKey = 'chatDesignThinkingSessaoCompleta';
+let editandoIndex = null;
 
-  function carregarMensagens() {
-    const divMensagens = document.getElementById('mensagens');
-    const msgs = JSON.parse(localStorage.getItem(mensagensKey)) || [];
-    divMensagens.innerHTML = msgs.map((msg, index) => `
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
-        <span>• ${msg}</span>
-        <div>
-          <button onclick="editarMensagem(${index})" style="background:none; border:none; color:orange; font-size:16px; cursor:pointer;">✏️</button>
-          <button onclick="removerMensagem(${index})" style="background:none; border:none; color:red; font-size:16px; cursor:pointer;">🗑️</button>
-        </div>
+function carregarMensagens() {
+  const divMensagens = document.getElementById('mensagens');
+  const msgs = JSON.parse(localStorage.getItem(mensagensKey)) || [];
+  divMensagens.innerHTML = msgs.map((msg, index) => `
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+      <span>• ${msg}</span>
+      <div>
+        <button onclick="editarMensagem(${index})" style="background:none; border:none; color:orange; font-size:16px; cursor:pointer;">✏️</button>
+        <button onclick="removerMensagem(${index})" style="background:none; border:none; color:red; font-size:16px; cursor:pointer;">🗑️</button>
       </div>
-    `).join('');
-    divMensagens.scrollTop = divMensagens.scrollHeight;
+    </div>
+  `).join('');
+  divMensagens.scrollTop = divMensagens.scrollHeight;
+}
+
+function removerMensagem(index) {
+  const msgs = JSON.parse(localStorage.getItem(mensagensKey)) || [];
+  msgs.splice(index, 1);
+  localStorage.setItem(mensagensKey, JSON.stringify(msgs));
+  carregarMensagens();
+}
+
+function editarMensagem(index) {
+  const msgs = JSON.parse(localStorage.getItem(mensagensKey)) || [];
+  const input = document.getElementById('inputChat');
+  input.value = msgs[index];
+  editandoIndex = index;
+  input.focus();
+}
+
+function enviarMensagem() {
+  const input = document.getElementById('inputChat');
+  const texto = input.value.trim();
+  if (!texto) return alert('Digite uma ideia antes de enviar!');
+  const msgs = JSON.parse(localStorage.getItem(mensagensKey)) || [];
+
+  if (editandoIndex !== null) {
+    msgs[editandoIndex] = texto;
+    editandoIndex = null;
+  } else {
+    msgs.push(texto);
   }
 
-  function removerMensagem(index) {
-    const msgs = JSON.parse(localStorage.getItem(mensagensKey)) || [];
-    msgs.splice(index, 1);
-    localStorage.setItem(mensagensKey, JSON.stringify(msgs));
-    carregarMensagens();
+  localStorage.setItem(mensagensKey, JSON.stringify(msgs));
+  input.value = '';
+  carregarMensagens();
+}
+
+function gerarPDF() {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+  const msgs = JSON.parse(localStorage.getItem(mensagensKey)) || [];
+  if (msgs.length === 0) {
+    alert('Não há ideias para gerar PDF.');
+    return;
   }
 
-  function editarMensagem(index) {
-    const msgs = JSON.parse(localStorage.getItem(mensagensKey)) || [];
-    const input = document.getElementById('inputChat');
-    input.value = msgs[index];
-    editandoIndex = index;
-    input.focus();
-  }
-
-  function enviarMensagem() {
-    const input = document.getElementById('inputChat');
-    const texto = input.value.trim();
-    if (!texto) return alert('Digite uma ideia antes de enviar!');
-    const msgs = JSON.parse(localStorage.getItem(mensagensKey)) || [];
-
-    if (editandoIndex !== null) {
-      msgs[editandoIndex] = texto;
-      editandoIndex = null;
-    } else {
-      msgs.push(texto);
+  doc.setFontSize(18);
+  doc.text('Ideias do Chat - Design Thinking', 10, 20);
+  doc.setFontSize(12);
+  let y = 40;
+  msgs.forEach((msg, i) => {
+    const texto = `${i + 1}. ${msg}`;
+    const splitText = doc.splitTextToSize(texto, 180);
+    doc.text(splitText, 10, y);
+    y += splitText.length * 10;
+    if (y > 280) {
+      doc.addPage();
+      y = 20;
     }
+  });
 
-    localStorage.setItem(mensagensKey, JSON.stringify(msgs));
-    input.value = '';
-    carregarMensagens();
+  doc.save('ideias_design_thinking.pdf');
+}
+
+function salvarSessao() {
+  const msgs = JSON.parse(localStorage.getItem(mensagensKey)) || [];
+  const input = document.getElementById('inputChat').value;
+  const sessao = {
+    mensagens: msgs,
+    inputAtual: input,
+    editandoIndex: editandoIndex
+  };
+  localStorage.setItem(sessaoKey, JSON.stringify(sessao));
+  alert('Sessão salva com sucesso!');
+}
+
+function carregarSessao() {
+  const sessao = JSON.parse(localStorage.getItem(sessaoKey));
+  if (!sessao) {
+    alert('Nenhuma sessão salva encontrada.');
+    return;
   }
+  localStorage.setItem(mensagensKey, JSON.stringify(sessao.mensagens));
+  document.getElementById('inputChat').value = sessao.inputAtual || '';
+  editandoIndex = sessao.editandoIndex !== undefined ? sessao.editandoIndex : null;
+  carregarMensagens();
+  alert('Sessão carregada!');
+}
 
-  function gerarPDF() {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-    const msgs = JSON.parse(localStorage.getItem(mensagensKey)) || [];
-    if (msgs.length === 0) {
-      alert('Não há ideias para gerar PDF.');
-      return;
+window.onload = carregarMensagens;
+
+
+</script>
+
+<script>
+  (function(){
+    if(!window.chatbase || window.chatbase("getState") !== "initialized") {
+      window.chatbase = (...arguments) => {
+        if (!window.chatbase.q) {
+          window.chatbase.q = [];
+        }
+        window.chatbase.q.push(arguments);
+      };
+      window.chatbase = new Proxy(window.chatbase, {
+        get(target, prop) {
+          if (prop === "q") {
+            return target.q;
+          }
+          return (...args) => target(prop, ...args);
+        }
+      });
     }
-
-    doc.setFontSize(18);
-    doc.text('Ideias do Chat - Design Thinking', 10, 20);
-    doc.setFontSize(12);
-    let y = 40;
-    msgs.forEach((msg, i) => {
-      const texto = `${i + 1}. ${msg}`;
-      const splitText = doc.splitTextToSize(texto, 180);
-      doc.text(splitText, 10, y);
-      y += splitText.length * 10;
-      if (y > 280) {
-        doc.addPage();
-        y = 20;
-      }
-    });
-
-    doc.save('ideias_design_thinking.pdf');
-  }
-
-  function salvarSessao() {
-    const msgs = JSON.parse(localStorage.getItem(mensagensKey)) || [];
-    const input = document.getElementById('inputChat').value;
-    const sessao = {
-      mensagens: msgs,
-      inputAtual: input,
-      editandoIndex: editandoIndex
+    const onLoad = function() {
+      const script = document.createElement("script");
+      script.src = "https://www.chatbase.co/embed.min.js";
+      script.id = "QTSCIuMSispNrt9cLQM2h";
+      script.domain = "www.chatbase.co";
+      document.body.appendChild(script);
     };
-    localStorage.setItem(sessaoKey, JSON.stringify(sessao));
-    alert('Sessão salva com sucesso!');
-  }
-
-  function carregarSessao() {
-    const sessao = JSON.parse(localStorage.getItem(sessaoKey));
-    if (!sessao) {
-      alert('Nenhuma sessão salva encontrada.');
-      return;
+    if (document.readyState === "complete") {
+      onLoad();
+    } else {
+      window.addEventListener("load", onLoad);
     }
-    localStorage.setItem(mensagensKey, JSON.stringify(sessao.mensagens));
-    document.getElementById('inputChat').value = sessao.inputAtual || '';
-    editandoIndex = sessao.editandoIndex !== undefined ? sessao.editandoIndex : null;
-    carregarMensagens();
-    alert('Sessão carregada!');
-  }
-
-  window.onload = carregarMensagens;
-
- (function(){if(!window.chatbase||window.chatbase("getState")!=="initialized"){window.chatbase=(...arguments)=>{if(!window.chatbase.q){window.chatbase.q=[]}window.chatbase.q.push(arguments)};window.chatbase=new Proxy(window.chatbase,{get(target,prop){if(prop==="q"){return target.q}return(...args)=>target(prop,...args)}})}const onLoad=function(){const script=document.createElement("script");script.src="https://www.chatbase.co/embed.min.js";script.id="QTSCIuMSispNrt9cLQM2h";script.domain="www.chatbase.co";document.body.appendChild(script)};if(document.readyState==="complete"){onLoad()}else{window.addEventListener("load",onLoad)}})();
+  })();
 </script>
 
 </body>
