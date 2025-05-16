@@ -22,7 +22,4 @@ Acesse o site direto no navegador (sem instalação):
 
 ➡️ [https://yasminstavares.github.io/IA-Design-Thinking/](https://yasminstavares.github.io/IA-Design-Thinking/)
 
-## 📚 Atividade sugerida
-
-Oficina prática com professores:
-- 10 min: explicação
+Lembre-se que ele é aberto localmente, então irá abrir um novo em cada navegador. 
