@@ -212,92 +212,85 @@ O projeto foi realizado pela estudante de Iniciação Científica Yasmin Sthefan
     <button id="btnPdf" onclick="gerarPDF()">📄 Gerar PDF</button>
   </div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script>
-    const mensagensKey = 'chatDesignThinkingMensagens';
-    let editandoIndex = null;
-
-    function carregarMensagens() {
-      const divMensagens = document.getElementById('mensagens');
-      const msgs = JSON.parse(localStorage.getItem(mensagensKey)) || [];
-      divMensagens.innerHTML = msgs.map((msg, index) => `
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
-          <span>• ${msg}</span>
-          <div>
-            <button onclick="editarMensagem(${index})" style="background:none; border:none; color:orange; font-size:16px; cursor:pointer;">✏️</button>
-            <button onclick="removerMensagem(${index})" style="background:none; border:none; color:red; font-size:16px; cursor:pointer;">🗑️</button>
-          </div>
-        </div>
-      `).join('');
-      divMensagens.scrollTop = divMensagens.scrollHeight;
-    }
-
-    function removerMensagem(index) {
-      const msgs = JSON.parse(localStorage.getItem(mensagensKey)) || [];
-      msgs.splice(index, 1);
-      localStorage.setItem(mensagensKey, JSON.stringify(msgs));
-      carregarMensagens();
-    }
-
-    function editarMensagem(index) {
-      const msgs = JSON.parse(localStorage.getItem(mensagensKey)) || [];
-      const input = document.getElementById('inputChat');
-      input.value = msgs[index];
-      editandoIndex = index;
-      input.focus();
-    }
-
-    function enviarMensagem() {
-      const input = document.getElementById('inputChat');
-      const texto = input.value.trim();
-      if (!texto) return alert('Digite uma ideia antes de enviar!');
-      const msgs = JSON.parse(localStorage.getItem(mensagensKey)) || [];
-
-      if (editandoIndex !== null) {
-        msgs[editandoIndex] = texto;
-        editandoIndex = null;
-      } else {
-        msgs.push(texto);
-      }
-
-      localStorage.setItem(mensagensKey, JSON.stringify(msgs));
-      input.value = '';
-      carregarMensagens();
-    }
-
-    async function gerarPDF() {
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF();
-      const msgs = JSON.parse(localStorage.getItem(mensagensKey)) || [];
-      if (msgs.length === 0) {
-        alert('Não há ideias para gerar PDF.');
-        return;
-      }
-
-      doc.setFontSize(18);
-      doc.text('Ideias do Chat - Design Thinking', 10, 20);
-      doc.setFontSize(12);
-      let y = 40;
-      msgs.forEach((msg, i) => {
-        const texto = `${i + 1}. ${msg}`;
-        const splitText = doc.splitTextToSize(texto, 180);
-        doc.text(splitText, 10, y);
-        y += splitText.length * 10;
-        if (y > 280) {
-          doc.addPage();
-          y = 20;
-        }
-      });
-
-      doc.save('ideias_design_thinking.pdf');
-    }
-
-    window.onload = carregarMensagens;
-    
-    <script>
-  // Seu código já existente (carregarMensagens, enviarMensagem, etc.)
-
+<script>
+  const mensagensKey = 'chatDesignThinkingMensagens';
   const sessaoKey = 'chatDesignThinkingSessaoCompleta';
+  let editandoIndex = null;
+
+  function carregarMensagens() {
+    const divMensagens = document.getElementById('mensagens');
+    const msgs = JSON.parse(localStorage.getItem(mensagensKey)) || [];
+    divMensagens.innerHTML = msgs.map((msg, index) => `
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+        <span>• ${msg}</span>
+        <div>
+          <button onclick="editarMensagem(${index})" style="background:none; border:none; color:orange; font-size:16px; cursor:pointer;">✏️</button>
+          <button onclick="removerMensagem(${index})" style="background:none; border:none; color:red; font-size:16px; cursor:pointer;">🗑️</button>
+        </div>
+      </div>
+    `).join('');
+    divMensagens.scrollTop = divMensagens.scrollHeight;
+  }
+
+  function removerMensagem(index) {
+    const msgs = JSON.parse(localStorage.getItem(mensagensKey)) || [];
+    msgs.splice(index, 1);
+    localStorage.setItem(mensagensKey, JSON.stringify(msgs));
+    carregarMensagens();
+  }
+
+  function editarMensagem(index) {
+    const msgs = JSON.parse(localStorage.getItem(mensagensKey)) || [];
+    const input = document.getElementById('inputChat');
+    input.value = msgs[index];
+    editandoIndex = index;
+    input.focus();
+  }
+
+  function enviarMensagem() {
+    const input = document.getElementById('inputChat');
+    const texto = input.value.trim();
+    if (!texto) return alert('Digite uma ideia antes de enviar!');
+    const msgs = JSON.parse(localStorage.getItem(mensagensKey)) || [];
+
+    if (editandoIndex !== null) {
+      msgs[editandoIndex] = texto;
+      editandoIndex = null;
+    } else {
+      msgs.push(texto);
+    }
+
+    localStorage.setItem(mensagensKey, JSON.stringify(msgs));
+    input.value = '';
+    carregarMensagens();
+  }
+
+  function gerarPDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    const msgs = JSON.parse(localStorage.getItem(mensagensKey)) || [];
+    if (msgs.length === 0) {
+      alert('Não há ideias para gerar PDF.');
+      return;
+    }
+
+    doc.setFontSize(18);
+    doc.text('Ideias do Chat - Design Thinking', 10, 20);
+    doc.setFontSize(12);
+    let y = 40;
+    msgs.forEach((msg, i) => {
+      const texto = `${i + 1}. ${msg}`;
+      const splitText = doc.splitTextToSize(texto, 180);
+      doc.text(splitText, 10, y);
+      y += splitText.length * 10;
+      if (y > 280) {
+        doc.addPage();
+        y = 20;
+      }
+    });
+
+    doc.save('ideias_design_thinking.pdf');
+  }
 
   function salvarSessao() {
     const msgs = JSON.parse(localStorage.getItem(mensagensKey)) || [];
@@ -327,40 +320,10 @@ O projeto foi realizado pela estudante de Iniciação Científica Yasmin Sthefan
   window.onload = carregarMensagens;
 </script>
 
-
-  </script>
-
-  <script>
-    (function () {
-      if (!window.chatbase || window.chatbase("getState") !== "initialized") {
-        window.chatbase = (...arguments) => {
-          if (!window.chatbase.q) window.chatbase.q = [];
-          window.chatbase.q.push(arguments);
-        };
-        window.chatbase = new Proxy(window.chatbase, {
-          get(target, prop) {
-            if (prop === "q") return target.q;
-            return (...args) => target(prop, ...args);
-          }
-        });
-      }
-
-      const onLoad = function () {
-        const script = document.createElement("script");
-        script.src = "https://www.chatbase.co/embed.min.js";
-        script.id = "QTSCIuMSispNrt9cLQM2h";
-        script.domain = "www.chatbase.co";
-        document.body.appendChild(script);
-      };
-
-      if (document.readyState === "complete") {
-        onLoad();
-      } else {
-        window.addEventListener("load", onLoad);
-      }
-    })();
     
-  </script>
+    
+    
+    
   <div style="margin-top: 10px;">
   <button onclick="salvarSessao()" style="background-color: #2c3e50; color: white; padding: 8px 12px; border-radius: 5px; border: none; cursor: pointer;">
     💾 Salvar Sessão
