@@ -33,5 +33,6 @@ Você é livre para usar, compartilhar e adaptar este conteúdo, desde que:
 
 Acesse o site direto no navegador (sem instalação):
 
+https://neurorehabusp.github.io/Oficina.de.idea-o-IA/
 
 Lembre-se que ele é aberto localmente, então irá abrir um novo em cada navegador. 
