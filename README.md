@@ -5,8 +5,13 @@ Foi desenvolvido no âmbito do grupo de pesquisa NeuroRehab, da Escola de Enferm
 
 O projeto foi realizado pela estudante de Iniciação Científica Yasmin Sthefane Tavares, sob orientação da Profª Drª Fabiana Faleiros Castro.
 
-🔖 Licença
-Este aplicativo está licenciado sob a Creative Commons Atribuição-NãoComercial-CompartilhaIgual 4.0 Internacional (CC BY-NC-SA 4.0).
+🔖 Este projeto está licenciado sob a [Creative Commons Atribuição-NãoComercial 4.0 Internacional (CC BY-NC 4.0)](https://creativecommons.org/licenses/by-nc/4.0/legalcode.pt).
+
+Você é livre para usar, compartilhar e adaptar este conteúdo, desde que:
+- Atribua os devidos créditos ao autor;
+- Não utilize o material para fins comerciais.
+
+[![Licença: CC BY-NC 4.0](https://licensebuttons.net/l/by-nc/4.0/88x31.png)](https://creativecommons.org/licenses/by-nc/4.0/)
 
 📚 Uso livre para fins educacionais não comerciais.
 
