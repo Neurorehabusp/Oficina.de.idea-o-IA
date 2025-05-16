@@ -1,0 +1,270 @@
+
+<!-- CÓDIGO ATUALIZADO A PARTIR DO SEU MODELO -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Design Thinking com IA</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0; padding: 20px;
+      background-color: #f3f3f3;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    .fase {
+      background: #fff;
+      border-radius: 10px;
+      padding: 15px;
+      margin: 15px 0;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .fase h2 {
+      color: #2c3e50;
+    }
+    .fase p {
+      margin: 8px 0;
+      white-space: pre-wrap;
+    }
+    .fase ul {
+      margin-left: 20px;
+    }
+    button {
+      margin-top: 10px;
+      padding: 8px 15px;
+      border: none;
+      border-radius: 5px;
+      background-color: #3498db;
+      color: white;
+      cursor: pointer;
+    }
+    .chat {
+      background: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      margin: 20px 0;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .chat input {
+      width: calc(100% - 90px);
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    .chat button.enviar {
+      width: 70px;
+      margin-left: 10px;
+      padding: 10px;
+      border-radius: 5px;
+      border: none;
+      background: #27ae60;
+      color: white;
+      cursor: pointer;
+    }
+    .chat .mensagens {
+      margin-top: 15px;
+      max-height: 200px;
+      overflow-y: auto;
+      background: #ecf0f1;
+      padding: 10px;
+      border-radius: 5px;
+      font-size: 14px;
+      white-space: pre-wrap;
+    }
+    .chat button#btnPdf {
+      margin-top: 15px;
+      background: #e67e22;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Design Thinking com IA</h1>
+
+<div class="fase">
+  <h2>1. Criação da Persona</h2>
+  <ul>
+    <li>Persona: personagem fictício baseado em dados reais que representa o usuário.</li>
+    <li>Inclui informações como idade, necessidades, interesses e motivações.</li>
+    <li>Exemplo: João, 8 anos, gosta de jogos de lógica e tem dificuldades com matemática sem material tátil adaptado.</li>
+  </ul>
+</div>
+
+<div class="fase">
+  <h2>2. Motivadores</h2>
+  <ul>
+    <li>Identificação do que motiva a persona: sonhos, preferências, frustrações.</li>
+    <li>Exemplo: João se motiva com atividades práticas e se frustra com cópias do quadro.</li>
+    <li>Esses dados ajudam a criar soluções alinhadas ao que faz sentido para o usuário.</li>
+  </ul>
+</div>
+
+<div class="fase">
+  <h2>3. Problemas</h2>
+  <ul>
+    <li>Identificação clara da barreira enfrentada pela persona.</li>
+    <li>Exemplo: João não participa das aulas por falta de material adaptado.</li>
+    <li>Definir o problema de forma objetiva ajuda a equipe a trabalhar alinhada.</li>
+  </ul>
+</div>
+
+<div class="fase">
+  <h2>4. Desenvolvimento do Projeto</h2>
+  <ul>
+    <li>Ideação coletiva: geração de soluções em grupo (brainstorming).</li>
+    <li>Prototipagem: criação de modelos simples (protótipos).</li>
+    <li>Teste com usuários reais e coleta de feedback.</li>
+    <li>Iteração: refinar soluções com base nas respostas dos usuários.</li>
+  </ul>
+</div>
+
+<div class="fase">
+  <h2>5. Visão</h2>
+  <ul>
+    <li>Projeção de um futuro ideal após a solução do problema.</li>
+    <li>Exemplo: João participando ativamente das aulas com recursos acessíveis.</li>
+    <li>A visão do futuro guia o processo criativo com um objetivo claro.</li>
+  </ul>
+</div>
+
+<div class="fase">
+  <h2>6. Solução e Impacto</h2>
+  <ul>
+    <li>Definição e validação da solução final.</li>
+    <li>Exemplo: software educativo acessível validado com crianças reais.</li>
+    <li>Análise do impacto: melhoria na participação, aprendizagem ou inclusão.</li>
+    <li>Encerramento do ciclo com foco em resultados reais para os usuários.</li>
+  </ul>
+</div>
+
+<div class="chat">
+  <h2>Chat de Ideias 💡</h2>
+  <p>Digite suas ideias e comentários para salvar e depois gerar um PDF:</p>
+  
+  <div style="display: flex;">
+    <input type="text" id="inputChat" placeholder="Digite sua ideia aqui..." />
+    <button class="enviar" onclick="enviarMensagem()">Enviar</button>
+  <div class="mensagens" id="mensagensChat"></div>
+  
+</div>
+
+<div id="mensagens" style="margin-top: 20px; background: #f9f9f9; border: 1px solid #ddd; padding: 10px; border-radius: 8px; max-height: 300px; overflow-y: auto;">
+  <!-- As mensagens aparecerão aqui -->
+</div> 
+
+<button onclick="gerarPDF()" style="margin-top: 15px; padding: 8px 12px;">📄 Gerar PDF</button>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script>
+  const mensagensKey = 'chatDesignThinkingMensagens';
+  let editandoIndex = null;
+
+  function carregarMensagens() {
+    const divMensagens = document.getElementById('mensagens');
+    const msgs = JSON.parse(localStorage.getItem(mensagensKey)) || [];
+
+    divMensagens.innerHTML = msgs.map((msg, index) => `
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+        <span>• ${msg}</span>
+        <div>
+          <button onclick="editarMensagem(${index})" style="background:none; border:none; color:orange; font-size:16px; cursor:pointer;">✏️</button>
+          <button onclick="removerMensagem(${index})" style="background:none; border:none; color:red; font-size:16px; cursor:pointer;">🗑️</button>
+        </div>
+      </div>
+    `).join('');
+
+    divMensagens.scrollTop = divMensagens.scrollHeight;
+  }
+
+  function removerMensagem(index) {
+    const msgs = JSON.parse(localStorage.getItem(mensagensKey)) || [];
+    msgs.splice(index, 1);
+    localStorage.setItem(mensagensKey, JSON.stringify(msgs));
+    carregarMensagens();
+  }
+
+  function editarMensagem(index) {
+    const msgs = JSON.parse(localStorage.getItem(mensagensKey)) || [];
+    const input = document.getElementById('inputChat');
+    input.value = msgs[index];
+    editandoIndex = index;
+    input.focus();
+  }
+
+  function enviarMensagem() {
+    const input = document.getElementById('inputChat');
+    const texto = input.value.trim();
+    if (!texto) return alert('Digite uma ideia antes de enviar!');
+
+    const msgs = JSON.parse(localStorage.getItem(mensagensKey)) || [];
+
+    if (editandoIndex !== null) {
+      msgs[editandoIndex] = texto;
+      editandoIndex = null;
+    } else {
+      msgs.push(texto);
+    }
+
+    localStorage.setItem(mensagensKey, JSON.stringify(msgs));
+    input.value = '';
+    carregarMensagens();
+  }
+
+  async function gerarPDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    const msgs = JSON.parse(localStorage.getItem(mensagensKey)) || [];
+    if (msgs.length === 0) {
+      alert('Não há ideias para gerar PDF.');
+      return;
+    }
+
+    doc.setFontSize(18);
+    doc.text('Ideias do Chat - Design Thinking', 10, 20);
+    doc.setFontSize(12);
+    let y = 40;
+    msgs.forEach((msg, i) => {
+      const texto = `${i + 1}. ${msg}`;
+      const splitText = doc.splitTextToSize(texto, 180);
+      doc.text(splitText, 10, y);
+      y += splitText.length * 10;
+      if (y > 280) {
+        doc.addPage();
+        y = 20;
+      }
+    });
+
+    doc.save('ideias_design_thinking.pdf');
+  }
+
+  window.onload = carregarMensagens;
+  
+
+  
+</script>
+
+
+<script>
+(function(){if(!window.chatbase||window.chatbase("getState")!=="initialized"){window.chatbase=(...arguments)=>{if(!window.chatbase.q){window.chatbase.q=[]}window.chatbase.q.push(arguments)};window.chatbase=new Proxy(window.chatbase,{get(target,prop){if(prop==="q"){return target.q}return(...args)=>target(prop,...args)}})}const onLoad=function(){const script=document.createElement("script");script.src="https://www.chatbase.co/embed.min.js";script.id="QTSCIuMSispNrt9cLQM2h";script.domain="www.chatbase.co";document.body.appendChild(script)};if(document.readyState==="complete"){onLoad()}else{window.addEventListener("load",onLoad)}})();
+</script>
+
+  <footer style="font-size: 0.9em; color: #555; text-align: center; padding: 10px 0; border-top: 1px solid #ccc; margin-top: 20px;">
+  © 2025 Profª Drª Fabiana Faleiros Castro / EERP-USP<br>
+  Este aplicativo está licenciado sob a 
+  <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.pt" target="_blank" rel="noopener noreferrer" style="color: #0066cc; text-decoration: none;">
+    Creative Commons Atribuição-NãoComercial-CompartilhaIgual 4.0 Internacional (CC BY-NC-SA 4.0)
+  </a>.<br>
+  Uso livre para fins educacionais não comerciais.<br>
+  <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+    <img src="https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png" alt="Licença Creative Commons" style="border-width:0; margin-top:5px;">
+  </a>
+</footer>
+
+</body>
+</html>
